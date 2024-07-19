@@ -56,6 +56,11 @@ class _gfxpy {
 
     inline void setColor(int r, int g, int b) { _lcd->setColor(r, g, b); }
 
+    inline void setColor(int c) { _lcd->setColor(c, c, c); }
+
+    inline int getRawColor() { return _lcd->getRawColor(); }
+    inline void setRawColor(int c) { _lcd->setRawColor(c); }
+
     inline int height() { return _lcd->height(); }
     inline int width() { return _lcd->width(); }
     inline int getRotation() { return _lcd->getRotation(); }
@@ -63,9 +68,9 @@ class _gfxpy {
     inline void getCursor() {}
 
     inline void setFont() {}
-    inline void setTextColor() {}
+
     inline void setTextScroll() {}
-    inline void setTextSize() {}
+
     inline void setCursor(int x, int y) { _lcd->setCursor(x, y); }
     inline void clear() { _lcd->clear(); }
 
@@ -84,9 +89,14 @@ class _gfxpy {
     inline void read() {}
     inline void write() {}
     inline void close() {}
+    inline void setTextColor(int color) { _lcd->setTextColor(color); }
+    inline void setTextColor(int fgcolor, int bgcolor) { _lcd->setTextColor(fgcolor, bgcolor); }
+    inline void setTextSize(float size) { _lcd->setTextSize(size, size); }
+    inline void setTextSize(float sx, float sy) { _lcd->setTextSize(sx, sy); }
+    inline int drawString(const std::string &text, int x, int y) { return _lcd->drawString(text.c_str(), x, y); }
 
-    inline int drawString(const std::string &text, int x, int y, int font) {
-        return _lcd->drawString(text.c_str(), x, y, font);
+    inline void qrcode(const std::string &text, int x, int y, int w, int version) {
+        _lcd->qrcode(text.c_str(), x, y, w, version);
     }
 
     inline void setTextStyle() {}
@@ -138,11 +148,44 @@ PYBIND11_MODULE(gfxpy, m) {
              pybind11::arg("r1"), pybind11::arg("angle0"), pybind11::arg("angle1"))
         .def("height", &_gfxpy::height)
         .def("width", &_gfxpy::width)
+        .def("getRawColor", &_gfxpy::getRawColor)
+        .def("setRawColor", &_gfxpy::setRawColor, pybind11::arg("c"))
         .def("getRotation", &_gfxpy::getRotation)
         .def("setCursor", &_gfxpy::setCursor, pybind11::arg("x"), pybind11::arg("y"))
         .def("clear", &_gfxpy::clear)
-        .def("setColor", &_gfxpy::setColor, pybind11::arg("r"), pybind11::arg("g"), pybind11::arg("b"))
-        .def("drawString", &_gfxpy::drawString, pybind11::arg("text"), pybind11::arg("x"), pybind11::arg("y"),
-             pybind11::arg("font"))
+        .def("setColor", pybind11::overload_cast<int, int, int>(&_gfxpy::setColor), pybind11::arg("r"),
+             pybind11::arg("g"), pybind11::arg("b"))
+        .def("setColor", pybind11::overload_cast<int>(&_gfxpy::setColor), pybind11::arg("c"))
+
+        .def("setTextColor", pybind11::overload_cast<int>(&_gfxpy::setTextColor), pybind11::arg("color"))
+        .def("setTextColor", pybind11::overload_cast<int, int>(&_gfxpy::setTextColor), pybind11::arg("fgcolor"),
+             pybind11::arg("bgcolor"))
+        .def("setTextSize", pybind11::overload_cast<float>(&_gfxpy::setTextSize), pybind11::arg("size"))
+        .def("setTextSize", pybind11::overload_cast<float, float>(&_gfxpy::setTextSize), pybind11::arg("sx"),
+             pybind11::arg("sx"))
+        .def("drawString", &_gfxpy::drawString, pybind11::arg("text"), pybind11::arg("x"), pybind11::arg("y"))
+
+        .def("qrcode", &_gfxpy::qrcode, pybind11::arg("text"), pybind11::arg("x"), pybind11::arg("y"),
+             pybind11::arg("w"), pybind11::arg("version"))
+
         .def("fillCircle", &_gfxpy::fillCircle, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r"));
 }
+
+// #include <pybind11/pybind11.h>
+
+// namespace py = pybind11;
+
+// class _gfxpy {
+// public:
+//     void someMethod() {
+//         // 实现你的方法
+//     }
+// };
+
+// PYBIND11_MODULE(example, m) {
+//     py::class_<_gfxpy>(m, "lgxfpy")
+//         .def("some_method", [](_gfxpy &self) {
+//             // 在这里调用 _gfxpy 对象的方法
+//             self.someMethod();
+//         });
+// }
