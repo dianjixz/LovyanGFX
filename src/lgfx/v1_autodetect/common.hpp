@@ -45,6 +45,10 @@ Contributors:
 
   #include "LGFX_AutoDetect_STM32.hpp"
 
+#elif defined (LGFX_LINUX_FB)
+
+  #include "LGFX_AutoDetect_FrameBuffer.hpp"
+
 #elif __has_include(<SDL2/SDL.h>) || __has_include(<SDL.h>)
 
   #include "LGFX_AutoDetect_sdl.hpp"
@@ -52,9 +56,5 @@ Contributors:
 #elif __has_include(<opencv2/opencv.hpp>)
 
   #include "LGFX_AutoDetect_OpenCV.hpp"
-
-#elif defined (LGFX_LINUX_FB)
-
-  #include "LGFX_AutoDetect_FrameBuffer.hpp"
 
 #endif

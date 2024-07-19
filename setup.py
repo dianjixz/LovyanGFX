@@ -23,7 +23,7 @@ ext_modules = [
         c_files,
         include_dirs=[pybind11.get_include(), "src"],
         language="c++",
-        extra_compile_args=["-DLGFX_LINUX_FB"],
+        extra_compile_args=["-DLGFX_LINUX_FB", '-DLGFX_PYBIND11'],
     ),
 ]
 
@@ -39,4 +39,5 @@ setup(
     license = "FreeBSD",
     author = "Lovyan dianjixz",
     author_email = "dianjixz@m5stack.com",
+    install_requires = ['pybind11'],
 )
