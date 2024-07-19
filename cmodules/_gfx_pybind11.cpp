@@ -85,6 +85,14 @@ class _gfxpy {
     inline void write() {}
     inline void close() {}
 
+    inline int drawString(const std::string &text, int x, int y, int font) {
+        return _lcd->drawString(text.c_str(), x, y, font);
+    }
+
+    inline void setTextColor() {}
+    inline void setTextSize() {}
+    inline void setTextStyle() {}
+
     void close_lcd() {
         if (_lcd) delete (_lcd);
         _lcd = NULL;
@@ -104,25 +112,39 @@ PYBIND11_MODULE(gfxpy, m) {
         .def("drawPixel", &_gfxpy::drawPixel, pybind11::arg("x"), pybind11::arg("y"))
         .def("drawFastVLine", &_gfxpy::drawFastVLine, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("h"))
         .def("drawFastHLine", &_gfxpy::drawFastHLine, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"))
-        .def("drawRect", &_gfxpy::drawRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"), pybind11::arg("h"))
-        .def("fillRect", &_gfxpy::fillRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"), pybind11::arg("h"))
-        .def("drawRoundRect", &_gfxpy::drawRoundRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"), pybind11::arg("h"), pybind11::arg("r"))
-        .def("fillRoundRect", &_gfxpy::fillRoundRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"), pybind11::arg("h"), pybind11::arg("r"))
+        .def("drawRect", &_gfxpy::drawRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"),
+             pybind11::arg("h"))
+        .def("fillRect", &_gfxpy::fillRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"),
+             pybind11::arg("h"))
+        .def("drawRoundRect", &_gfxpy::drawRoundRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"),
+             pybind11::arg("h"), pybind11::arg("r"))
+        .def("fillRoundRect", &_gfxpy::fillRoundRect, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("w"),
+             pybind11::arg("h"), pybind11::arg("r"))
         .def("drawCircle", &_gfxpy::drawCircle, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r"))
         .def("fillCircle", &_gfxpy::fillCircle, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r"))
-        .def("drawEllipse", &_gfxpy::drawEllipse, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("rx"), pybind11::arg("ry"))
-        .def("fillEllipse", &_gfxpy::fillEllipse, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("rx"), pybind11::arg("ry"))
-        .def("drawLine", &_gfxpy::drawLine, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"), pybind11::arg("y1"))
-        .def("drawTriangle", &_gfxpy::drawTriangle, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"), pybind11::arg("y1"), pybind11::arg("x2"), pybind11::arg("y2"))
-        .def("fillTriangle", &_gfxpy::fillTriangle, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"), pybind11::arg("y1"), pybind11::arg("x2"), pybind11::arg("y2"))
-        .def("drawBezier", &_gfxpy::drawBezier, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"), pybind11::arg("y1"), pybind11::arg("x2"), pybind11::arg("y2"))
-        .def("drawArc", &_gfxpy::drawArc, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r0"), pybind11::arg("r1"), pybind11::arg("angle0"), pybind11::arg("angle1"))
-        .def("fillArc", &_gfxpy::fillArc, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r0"), pybind11::arg("r1"), pybind11::arg("angle0"), pybind11::arg("angle1"))
+        .def("drawEllipse", &_gfxpy::drawEllipse, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("rx"),
+             pybind11::arg("ry"))
+        .def("fillEllipse", &_gfxpy::fillEllipse, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("rx"),
+             pybind11::arg("ry"))
+        .def("drawLine", &_gfxpy::drawLine, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"),
+             pybind11::arg("y1"))
+        .def("drawTriangle", &_gfxpy::drawTriangle, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"),
+             pybind11::arg("y1"), pybind11::arg("x2"), pybind11::arg("y2"))
+        .def("fillTriangle", &_gfxpy::fillTriangle, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"),
+             pybind11::arg("y1"), pybind11::arg("x2"), pybind11::arg("y2"))
+        .def("drawBezier", &_gfxpy::drawBezier, pybind11::arg("x0"), pybind11::arg("y0"), pybind11::arg("x1"),
+             pybind11::arg("y1"), pybind11::arg("x2"), pybind11::arg("y2"))
+        .def("drawArc", &_gfxpy::drawArc, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r0"),
+             pybind11::arg("r1"), pybind11::arg("angle0"), pybind11::arg("angle1"))
+        .def("fillArc", &_gfxpy::fillArc, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r0"),
+             pybind11::arg("r1"), pybind11::arg("angle0"), pybind11::arg("angle1"))
         .def("height", &_gfxpy::height)
         .def("width", &_gfxpy::width)
         .def("getRotation", &_gfxpy::getRotation)
         .def("setCursor", &_gfxpy::setCursor, pybind11::arg("x"), pybind11::arg("y"))
         .def("clear", &_gfxpy::clear)
         .def("setColor", &_gfxpy::setColor, pybind11::arg("r"), pybind11::arg("g"), pybind11::arg("b"))
+        .def("drawString", &_gfxpy::drawString, pybind11::arg("text"), pybind11::arg("x"), pybind11::arg("y"),
+             pybind11::arg("font"))
         .def("fillCircle", &_gfxpy::fillCircle, pybind11::arg("x"), pybind11::arg("y"), pybind11::arg("r"));
 }
