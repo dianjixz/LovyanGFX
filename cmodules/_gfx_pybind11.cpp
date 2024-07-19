@@ -89,8 +89,6 @@ class _gfxpy {
         return _lcd->drawString(text.c_str(), x, y, font);
     }
 
-    inline void setTextColor() {}
-    inline void setTextSize() {}
     inline void setTextStyle() {}
 
     void close_lcd() {
