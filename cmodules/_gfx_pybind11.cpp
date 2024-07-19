@@ -12,17 +12,23 @@
 class _gfxpy {
    private:
     LGFX *_lcd;
+    int _width;
+    int _height;
+    std::string _device_name;
 
    public:
-    _gfxpy() {
-        _lcd = NULL;
-        _lcd = new LGFX(320, 240, "/dev/fb1");
+    _gfxpy() : _lcd(NULL), _width(0), _height(0) {}
+    _gfxpy(int width, int height, const std::string &device_name)
+        : _lcd(NULL), _width(width), _height(height), _device_name(device_name) {}
+    inline void init() {
+        if ((_lcd == NULL) && (_width != 0) && (_height != 0) && (!_device_name.empty())) {
+            _lcd = new LGFX(_width, _height, _device_name.c_str());
+            _lcd->init();
+        } else {
+            pybind11::print("Please check the parameters of the display: \n    width:", _width, ", height:", _height,
+                            ", device_name:", _device_name);
+        }
     }
-    _gfxpy(int width, int height, const std::string &device_name) {
-        _lcd = NULL;
-        _lcd = new LGFX(width, height, device_name.c_str());
-    }
-    inline void init() { _lcd->init(); }
     inline void setRotation(int rotation) { _lcd->setRotation(rotation); }
     inline void setColorDepth(int bits) { _lcd->setColorDepth(bits); }
     inline void fillScreen() { _lcd->fillScreen(); }
